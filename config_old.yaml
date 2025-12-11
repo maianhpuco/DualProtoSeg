@@ -1,0 +1,111 @@
+model:
+  backbone:
+    config: conch_vit
+    stride:
+    - 4
+    - 2
+    - 2
+    - 1
+  
+  n_ratio: 0.5
+  num_prototypes_per_class: 3
+  prototype_feature_dim: 512
+
+  # Text fusion settings
+  enable_text_fusion: true
+  fusion_dim: 512
+
+  # Text prompt settings
+  learnable_text_prompt: true
+  prompt_init_scale: 0.02
+  prototype_init_mode: text_learnable
+  prototype_text_noise_std: 0.02
+
+  # Learnable context
+  use_ctx_prompt: false
+  ctx_prompt_len: 8
+  ctx_class_specific: true
+
+  # Text prompts for each class
+clip:
+  model_name: conch_ViT-B-16
+  checkpoint_path: /project/hnguyen2/mvu9/pretrained_checkpoints/conch_checkpoints/pytorch_model.bin
+  cache_dir: ./checkpoints/conch
+  hf_hub: null
+  hf_token: null
+  force_image_size: 448
+  proj_contrast: false
+  freeze: true
+
+dataset:
+  name: bcss
+  train_root: /project/hnguyen2/mvu9/datasets/weakly_sup_segmentation_datasets/BCSS-WSSS/training
+  val_root: /project/hnguyen2/mvu9/datasets/weakly_sup_segmentation_datasets/BCSS-WSSS
+  cls_num_classes: 4
+  input_size:
+  - 224
+  - 224
+
+work_dir:
+  ckpt_dir: checkpoints
+  pred_dir: predictions
+  train_log_dir: train_log
+
+train:
+  samples_per_gpu: 64
+  epoch: 20
+  warmup_iters: 
+  pretrained: true
+
+  # Classification losses for multi-scale features
+  l1: 1.0
+  l2: 1.0 
+  l3: 1.0
+  l4: 1.0
+  l5: 1.0
+
+  # Prototype losses
+  l_proto_text: 0.1
+  l_proto_temp: 0.07
+
+  # Fusion and diversity losses
+  lambda_j: 0.50
+  l_fuse: 1.0
+
+  # Diversity loss settings
+  diversity:
+    omega_window: 7
+    omega_min_mass: 0.1
+    temperature: 0.05
+    sharpness_weight: 0.2
+    coverage_weight: 0.2
+    repulsion_weight: 0.8
+    repulsion_margin: 0.25
+    jeffreys_weight: 0.1
+    pool_size: 14
+    debug: true
+    debug_every: 500
+
+  # Mask settings
+  mask_adapter_alpha: 0.5
+  merge_train: mean
+  merge_test: max
+
+  # Learnable prototype settings
+  learnable_prototype_warmup_epochs: 0  # Freeze learnable prototypes for first 3 epochs
+  # COMMENTED OUT: lambda_separation_cluster: 0.05  # Weight for separation and cluster loss (reduced from 0.1)
+  lambda_contrastive: 0.01  # Weight for global contrastive regularization loss
+
+optimizer:
+  type: AdamW
+  learning_rate: 0.00005
+  betas:
+  - 0.9
+  - 0.999
+  weight_decay: 0.001
+
+scheduler:
+  warmup_iter: 0
+  warmup_ratio: 1.0e-06
+  power: 1.0
+ 

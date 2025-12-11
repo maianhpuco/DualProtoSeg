@@ -1,0 +1,24 @@
+# Minimal requirements to run train.py (add versions as needed)
+numpy
+torch
+torchvision
+timm
+omegaconf
+tqdm
+scikit-learn
+opencv-python
+Pillow
+albumentations
+ttach
+pydensecrf
+matplotlib
+
+# Optional / project-specific
+# If your project uses the CONCH/open-CLIP helper, install one of these:
+# open_clip_torch   # pip package: open_clip_torch
+# conch            # project-specific; may be provided in repo or private index
+
+# Notes:
+# - Install a CUDA-capable torch build that matches your CUDA version (see https://pytorch.org).
+# - Some packages (pydensecrf) may require system libs (e.g., libstdc++) and a C compiler.
+# - You can pin versions if desired, e.g., 'torch==2.2.0+cu121' via the PyTorch index.
