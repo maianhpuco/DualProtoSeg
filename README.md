@@ -58,8 +58,7 @@ The script will default to saving outputs under a `runs/` folder if the config p
 **Notes & tips**
 - If your `config.yaml` points to a CONCH checkpoint (e.g., `clip.checkpoint_path`), ensure that file path exists.
 - To resume training from a checkpoint, pass `--resume path/to/checkpoint.pth` to `train.py` (edit `Makefile` or run `python3 train.py ...`).
-- Outputs (checkpoints, predictions) are written under the work directory configured in the YAML (default: `runs/...` / `checkpoints/`, `predictions/`). See `.gitignore` — these folders are ignored.
-- If a package named `conch` is required but not available via pip, use the project-specific installation (cloning and `pip install -e .`).
+
 
 ## Acknowledgment
 Parts of the `utils/` folder were inspired by the excellent PBIP implementation by  
